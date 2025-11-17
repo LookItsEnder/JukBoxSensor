@@ -1,0 +1,5 @@
+asyncio
+Adafruit_ADS1X15
+time
+websockets
+json
