@@ -1,2 +1,2 @@
 # JukBoxSensor
-JukBox - Now with Websocket integration
+JukBox Backend - Now with Websocket integration
