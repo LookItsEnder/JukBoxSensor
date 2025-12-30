@@ -1,4 +1,5 @@
 import asyncio
+import portconfig
 from websockets.asyncio.server import broadcast, serve
 
 async def noop(websocket):
@@ -10,7 +11,7 @@ async def show_data(server):
     await asyncio.sleep(5)
 
 async def main():
-    async with serve(noop, "localhost", 5678) as server:
+    async with serve(noop, "localhost", port=portconfig.port_s) as server:
         while(True):
             await show_data(server)
 
