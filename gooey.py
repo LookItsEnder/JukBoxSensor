@@ -4,19 +4,27 @@ import os
 import subprocess
 
 dpg.create_context()
-dpg.create_viewport(title='JukBox Geophone Setup',min_height=300,min_width=300,max_height=300,max_width=300)
+with dpg.theme() as menu_theme:
+    with dpg.theme_component(dpg.mvAll):
+        dpg.add_theme_color(dpg.mvThemeCol_MenuBarBg, (200, 0, 0, 255)) #menu bar color
+        dpg.add_theme_color(dpg.mvThemeCol_Text, (255, 255, 255, 255)) #text color
+
+dpg.create_viewport(title='JukBox Geophone Setup',width=300,height=300,min_height=300,min_width=300,resizable=False)
 
 process_ID = 0
+
 def start_connection(sender):
     global process_ID
     print(f"Button {sender} has been clicked!")
-    process = subprocess.Popen(["python3",R"C:\Users\freimundcj07\Documents\GitHub\JukBoxSensor\temp.py"])
+    dpg.set_value(1,"Connection is ACTIVE.")
+    process = subprocess.Popen(["python3",R"temp.py"])
     process_ID = process.pid
     print(process_ID)
 
 def stop_connection(sender):
     global process_ID
     print(f"Button {sender} has been clicked!")
+    dpg.set_value(1,"There is no active connection.")
     print(process_ID)
     try:
         os.kill(process_ID, signal.SIGTERM)
@@ -24,10 +32,16 @@ def stop_connection(sender):
     except OSError as e:
         print(f"Error terminating process {process_ID}: {e}")
 
-with dpg.window(label=" ",width=300,height=300,no_move=True, no_close=True,no_collapse=True,no_resize=True,menubar=False):
+with dpg.window(tag="prim",label=" ",width=300,height=300,no_move=True,no_resize=True,no_collapse=True,no_title_bar=True):
+    dpg.bind_theme(menu_theme)
+    with dpg.menu_bar():
+        with dpg.menu(label="Advanced Settings"):
+            dpg.add_menu_item(label="Network Settings")
+    
     dpg.add_text("Welcome to JukBox!")
-    dpg.add_button(label="Start", callback=start_connection)
-    dpg.add_button(label="Stop", callback=stop_connection)
+    dpg.add_text(tag=1,default_value="There is no active connection.")
+    dpg.add_button(label="Start Data Collection", callback=start_connection)
+    dpg.add_button(label="Stop Data Collection", callback=stop_connection)
 
 
 dpg.setup_dearpygui()
