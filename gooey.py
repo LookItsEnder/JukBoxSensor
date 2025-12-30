@@ -15,7 +15,7 @@ process_ID = 0
 
 def port_5678():
     if(dpg.get_value(5678)==False):
-        portconfig.port_s=8001
+        portconfig.port_s=443
         dpg.set_value("Port",f"Data Collection is on port {portconfig.port_s}")
     else:
         portconfig.port_s = 5678
@@ -50,7 +50,7 @@ with dpg.window(tag="prim",label=" ",width=500,height=300,no_move=True,no_resize
     with dpg.menu_bar():
         with dpg.menu(label="Network Settings"):
             with dpg.menu(label="Change Active Port"):
-                dpg.add_text("Default Value: 8001")
+                dpg.add_text("Default Value: 443")
                 dpg.add_menu_item(tag=5678,label="Set to 5678", callback=port_5678, check=True)
                 dpg.add_text("Custom Port:")
                 dpg.add_input_int(tag="customPort",min_clamped=True,min_value=0,callback=custom_port)
