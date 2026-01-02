@@ -4,9 +4,11 @@ import Adafruit_ADS1x15
 import json
 import asyncio
 import websockets
+with open("station.json",'r') as file:
+    stat_data = json.load(file)
 
 async def connect_to_wss():
-    uri = "wss://ws.jukbox.remllez.com:443/pubsub/juk/"
+    uri = f"wss://ws.jukbox.remllez.com:{stat_data['port']}/pubsub/juk/"
     async with websockets.connect(uri) as websocket:
         while(True):
             adc = Adafruit_ADS1x15.ADS1115(address=0x48, busnum=1)
@@ -19,16 +21,21 @@ async def connect_to_wss():
             "start": 0,
             "end": 0,
             "data": [],
-            "network": "WW",
-            "station": "JUK",
-            "location": "02",
-            "channel": "BHN",
+            "network": "",
+            "station": "",
+            "location": "",
+            "channel": "",
             "sampleRate": 50,
-            "id": "WW.JUK.02.BHN"
+            "id": ""
             }'''
             jukdata = json.loads(json_string)
             jukdata['start'] = int(round(t0,3)*1000)
             jukdata['end'] = int(round(t_end,3)*1000)
+            jukdata['network'] = stat_data['network']
+            jukdata['station'] = stat_data['station']
+            jukdata['location'] = stat_data['location']
+            jukdata['channel'] = stat_data['channel']
+            jukdata['id'] = f"{stat_data['network']}.{stat_data['station']}.{stat_data['location']}.{stat_data['channel']}"
             while(time.time() < t_end):#True):
                 value = adc.read_adc_difference(0, gain=GAIN)
                 #f.write(f"{value}\n")
