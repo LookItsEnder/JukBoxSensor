@@ -1,7 +1,7 @@
 {
-    "network": "XX",
-    "station": "XXX",
-    "location": "XX",
-    "channel": "XXX",
+    "network": "WW",
+    "station": "JUK",
+    "location": "02",
+    "channel": "BHN",
     "port": 443
 }

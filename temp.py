@@ -10,7 +10,7 @@ with open("station.json",'r') as file:
 
 async def connect_to_wss():
     global stat_data
-    uri = f"wss://ws.jukbox.remllez.com:{stat_data['port']}/pubsub/juk/"
+    uri = f"wss://ws.jukbox.remllez.com:{stat_data['port']}/pubsub/xx.xxx.xx.xxx"
     async with websockets.connect(uri) as websocket:
         while(True):
             #adc = Adafruit_ADS1x15.ADS1115(address=0x48, busnum=1)
